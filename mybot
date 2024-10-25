@@ -1,0 +1,53 @@
+#import necessary libraries
+import json
+import random
+import nltk
+from nltk.stem import WordNetLemmatizer
+import numpy as np
+
+nltk.download("punkt")
+nltk.download("wordnet")
+
+#initialize lemmatizer
+lemmatizer = WordNetLemmatizer()
+
+#Load intent files
+with open ("intents.json") as file:
+    intents = json.load(file)
+
+#Tokenize & lemmatize patterns
+def preprocess_sentence(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    tokens = [lemmatizer.lemmatize(word.lower()) for word in tokens]
+    return tokens
+#Train the bots
+def match_intent(user_input):
+
+#Tokenize user input
+    tokens = preprocess_sentence(user_input)
+
+#Iterate through intent and patterns
+    for intent in intents ["intents"]:
+        for pattern in intents["patterns"]:
+            pattern_tokens = preprocess_sentence(pattern)
+            if set (pattern_tokens).issubset(set(tokens)):
+                return intent
+    return None
+
+#Define response logic
+def get_response(user_input):
+    intent = match_intent(user_input)
+    if intent:
+        return random.choice(intent["responses"])
+    else:
+        return "I'm sorry, I didn't understand that. Could you rephrase?"
+
+#Build the chat loop
+print("Chatbot: Hello! Type 'quit' to exit")
+while True:
+    user_input = input("You: ")
+    if user_input.lower() == 'quit':
+        print("Chatbot: Goodbye!")
+        break
+    response = get_response(user_input)
+    print("Chatbot:",response)
