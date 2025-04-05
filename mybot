@@ -5,8 +5,8 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 import numpy as np
 
-nltk.download("punkt")
-nltk.download("wordnet")
+#nltk.download("punkt")
+#nltk.download("wordnet")
 
 #initialize lemmatizer
 lemmatizer = WordNetLemmatizer()
@@ -28,7 +28,7 @@ def match_intent(user_input):
 
 #Iterate through intent and patterns
     for intent in intents ["intents"]:
-        for pattern in intents["patterns"]:
+        for pattern in intent["patterns"]:
             pattern_tokens = preprocess_sentence(pattern)
             if set (pattern_tokens).issubset(set(tokens)):
                 return intent
@@ -43,11 +43,24 @@ def get_response(user_input):
         return "I'm sorry, I didn't understand that. Could you rephrase?"
 
 #Build the chat loop
-print("Chatbot: Hello! Type 'quit' to exit")
+print("Chatbot: Hello! This is @ice-ship")
+user_input = input("You: ")
+
+print("Chatbot: What is your name?")
+user_name = input("You: ")
+
+print(f"Chatbot: Nice to meet you, {user_name}!")
+print("Chatbot: Type 'Proceed' to continue or 'Quit' to exit.")
+
 while True:
     user_input = input("You: ")
-    if user_input.lower() == 'quit':
-        print("Chatbot: Goodbye!")
+    if user_input.lower() == 'proceed':
+        print(f"Chatbot: Let's continue, {user_name}!")
+    
         break
-    response = get_response(user_input)
-    print("Chatbot:",response)
+    elif user_input.lower() == 'quit':
+        print(f"Chatbot: Goodbye, {user_name}! Have a great day!")
+        break
+    else:
+        print("Chatbot: Sorry, I did not understand you.")
+        print("Chatbot: Please type 'Proceed' to continue or 'Quit' to exit.")
